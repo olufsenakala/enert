@@ -8,11 +8,13 @@ import ConcertDetailPage from '../../features/concert/ConcertDetail/ConcertDetai
 import UserDetailPage from '../../features/UserDetail/UserDetailPage';
 import DashboardPage from '../../features/Dashboard/DashboardPage';
 import TestComponent from '../../features/testarea/TestComponent';
+import ModalManager from '../../features/modals/ModalManager';
 
 class App extends Component {
   render() {
     return (
       <div>
+        <ModalManager />
         <NavBar />
         <Switch>
           <Route exact path='/' component={HomePage} />

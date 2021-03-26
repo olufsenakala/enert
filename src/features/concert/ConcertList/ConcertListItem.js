@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ConcertListAttendee from './ConcertListAttendee';
 import concertImg from '../../../assets/event_img.png';
+import { format } from 'date-fns';
 
 class ConcertListItem extends Component {
   render() {
@@ -73,7 +74,10 @@ class ConcertListItem extends Component {
             <div className="ct_loc__wrap">
               <div className="ct_time">
                 <h3 className="ttl">Time</h3>
-                <p className="name">{concert.date}</p>
+                <p className="name">
+                  {format(concert.date.toDate(), 'EEEE do LLL')} at{' '}
+                  {format(concert.date.toDate(), 'h:mm a')}
+                </p>
               </div>
               <div className="ct_location">
                 <h3 className="ttl">Location</h3>
@@ -82,9 +86,10 @@ class ConcertListItem extends Component {
             </div>
           </div>
           <div className="ct_item__arrow">
-            {concert.attendees && concert.attendees.map(attendee => (
-              <ConcertListAttendee key={attendee.id} attendee={attendee} />
-            ))}
+            {concert.attendees && 
+              Object.values(concert.attendees).map((attendee, index) => (
+                <ConcertListAttendee key={index} attendee={attendee} />
+              ))}
           </div>
         </div>
         <div className="ct_pfmrs">

@@ -6,7 +6,7 @@ class ConcertList extends Component {
     const { concerts, deleteConcert } = this.props
     return (
       <>
-        {concerts.map(concert => (
+        {concerts && concerts.map(concert => (
           <ConcertListItem 
             key={concert.id} 
             concert={concert} 

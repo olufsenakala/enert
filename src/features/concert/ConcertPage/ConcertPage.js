@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import ConcertList from '../ConcertList/ConcertList';
 import {createConcert, updateConcert, deleteConcert} from '../concertActions';
+import LoadingComponent from '../../../app/layout/LoadingComponent';
+import { firestoreConnect } from 'react-redux-firebase';
 
 const mapState = (state) => ({
-  concerts: state.concerts
+  concerts: state.firestore.ordered.concerts,
+  loading: state.async.loading
 })
 
 const actions = {
@@ -20,7 +23,8 @@ class ConcertPage extends Component {
   }
 
   render() {
-    const {concerts} = this.props;
+    const {concerts, loading} = this.props;
+    if (loading) return <LoadingComponent />
     return (
       <div className="ct_main__wrapper" style={{ paddingTop:'5rem' }}>
         <div className="ct_main__container">
@@ -40,4 +44,7 @@ class ConcertPage extends Component {
   }
 }
 
-export default connect(mapState, actions)(ConcertPage);
+export default connect(
+  mapState, 
+  actions
+)(firestoreConnect([{ collection: 'concerts' }])(ConcertPage));

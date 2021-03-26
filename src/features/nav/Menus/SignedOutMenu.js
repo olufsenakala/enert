@@ -1,10 +1,10 @@
 import React from 'react'
 
-const SignedOutMenu = ({signIn}) => {
+const SignedOutMenu = ({signIn, register}) => {
   return (
     <>
       <button onClick={signIn}>Login</button>
-      <button>Register</button>
+      <button onClick={register} >Register</button>
     </>
   )
 }

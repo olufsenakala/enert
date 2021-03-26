@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { format, parseISO } from 'date-fns';
 
 import Schedule from '../../parts/Schedule';
 import ScheduleHead from '../../parts/ScheduleHead';
@@ -48,7 +49,9 @@ const ConcertDetailPage = ({concert}) => {
           <p className="time">Time &amp; Location</p>
           <span className="line"></span>
         </div>
-        <h3 className="date">{concert.date}</h3>
+        <h3 className="date">
+          {concert.date && format(parseISO(concert.date), 'EEE do LLLL')}
+        </h3>
         <p className="adrs">{concert.venue}</p>
         <ConcertDuration />
       </div>
