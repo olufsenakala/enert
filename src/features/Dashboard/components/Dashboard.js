@@ -31,8 +31,8 @@ const Dashboard = () => {
         <div className="cd_cnct__wrap">
           <h3 className="cd_cnct__title">Upcoming Concerts</h3>
           <div className="cd_cnct__tab">
-            <p className="active">Hosting</p>
-            <p>Attending</p>
+            <p className="txt active">Hosting</p>
+            <p className="txt">Attending</p>
           </div>
           <div className="cp_cncrt__body">
             <div className="cp_cncrt__item">

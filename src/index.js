@@ -14,21 +14,24 @@ const store = configureStore();
 
 // console.log(store.getState());
 
-ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <ScrollToTop>
-        <ReduxToastr 
-          position='bottom-right'
-          transitionIn='fadeIn'
-          transitionOut='fadeOut'
-        />
-        <App />
-      </ScrollToTop>
-    </BrowserRouter>
-  </Provider>, 
-  document.getElementById('root')
-);
+store.firebaseAuthIsReady.then(() => {
+  ReactDOM.render(
+    <Provider store={store}>
+      <BrowserRouter>
+        <ScrollToTop>
+          <ReduxToastr 
+            position='bottom-right'
+            transitionIn='fadeIn'
+            transitionOut='fadeOut'
+          />
+          <App />
+        </ScrollToTop>
+      </BrowserRouter>
+    </Provider>, 
+    document.getElementById('root')
+  );
+})
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

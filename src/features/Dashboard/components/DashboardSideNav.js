@@ -35,13 +35,7 @@ const DashboardSideNav = () => {
             </NavLink>
           </li>
           <li className="cd_sdMn__item">
-            <NavLink to="/none" className="cd_sdMn__link">
-              <img className="pic" src={dashSetIcon} alt="" />
-              <p className="txt">My Cards</p>
-            </NavLink>
-          </li>
-          <li className="cd_sdMn__item">
-            <NavLink to="/none" className="cd_sdMn__link">
+            <NavLink to="/dashboard/change_password" className="cd_sdMn__link">
               <img className="pic" src={dashSetIcon} alt="" />
               <p className="txt">Change Password</p>
             </NavLink>

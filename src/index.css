@@ -1151,14 +1151,14 @@ ul li {
   display: flex;
 }
 
-.cd_cnct__tab p {
+.cd_cnct__tab .txt {
   font-size: 0.9rem;
   margin-right: 1rem;
   padding: 0.3rem 1em;
   border-bottom: 2px solid transparent;
 }
 
-.cd_cnct__tab p.active {
+.cd_cnct__tab .txt.active {
   border-bottom: 2px solid #8b62c0;
 }
 
