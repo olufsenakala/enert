@@ -6,7 +6,7 @@ class EditConcert extends Component {
     return (
       <main className="cd_main__wrap">
         <h1>Edit page</h1>
-        <ConcertForm id={this.props.match.params.id} />
+        <ConcertForm id={this.props.match.params.id} {...this.props} />
       </main>
     )
   }

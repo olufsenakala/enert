@@ -1,11 +1,12 @@
 import React from 'react';
 import ConcertForm from '../concert/ConcertForm/ConcertForm';
 
-const NewConcert = () => {
+const NewConcert = (props) => {
+  // console.log(props)
   return (
     <main className="cd_main__wrap">
       <h1>New concert page</h1>
-      <ConcertForm />
+      <ConcertForm {...props} />
     </main>
   )
 }

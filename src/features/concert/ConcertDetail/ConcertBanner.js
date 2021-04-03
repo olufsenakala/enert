@@ -1,9 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import concertBanner from '../../../assets/cncrt_main.jpg';
 import disc from '../../../assets/disc.png';
 
 
-const ConcertBanner = ({concert}) => {
+const ConcertBanner = ({concert, attendees}) => {
   return (
     <div className="tc_hero__image">
           <div className="tc_hero__img__wrap">
@@ -21,14 +22,16 @@ const ConcertBanner = ({concert}) => {
               <img className="pic" src={concert.hostPhotoURL} alt=""/>
             </div>
             <div className="tc_hero__host">
-              <h3 className="name">Ariana Grande</h3>
+              <h3 className="name">{concert.hostedBy}</h3>
               <p className="host">Host</p>
             </div>
           </div>
           <div className="tc_hero__atnd">
             <p className="atnde">Attendees</p>
-            {concert.attendees && concert.attendees.map((attendee)=>
-              <img key={attendee.id} className="pic" src={attendee.photoURL} alt=""/>
+            {attendees && attendees.map((attendee)=>
+              <Link key={attendee.id} to={`profile/${attendee.id}`}>
+                <img className="pic" src={attendee.photoURL} alt=""/>
+              </Link>
             )}
           </div>
         </div>

@@ -8,27 +8,28 @@ import {
   hasLengthGreaterThan
 } from 'revalidate';
 import { Segment, Form, Button } from 'semantic-ui-react';
-import cuid from 'cuid';
-import { createConcert, updateConcert } from '../concertActions';
+import { cancelToggle, createConcert, updateConcert } from '../concertActions';
 import SelectInput from '../../../app/common/form/SelectInput';
 import TextInput from '../../../app/common/form/TextInput';
 import DateInput from '../../../app/common/form/DateInput';
 import TextArea from '../../../app/common/form/TextArea';
 // import { getLatLng } from 'react-places-autocomplete';
 
-import detailImg from '../../../assets/bnr_sup.png';
+import { withFirestore } from 'react-redux-firebase';
 
 const mapState = (state, ownProps) => {
   const concertId = ownProps.id;
 
   let concert = {};
 
-  if (concertId && state.concerts.length > 0) {
-    concert = state.concerts.filter(concert => concert.id === concertId)[0]
+  if (state.firestore.ordered.concerts && state.firestore.ordered.concerts.length > 0) {
+    concert = state.firestore.ordered.concerts.filter(concert => concert.id === concertId)[0]
   }
 
   return {
-    initialValues: concert
+    initialValues: concert,
+    concert,
+    cancelToggle
   }
 }
 
@@ -65,21 +66,33 @@ class ConcertForm extends Component {
   //   venueLatLng: {}
   // }
 
-  onFormSubmit = values => {
-    if (this.props.initialValues.id) {
-      this.props.updateConcert(values);
-      // this.props.history.push('/dashboard/concerts');
-    } else {
-      const newConcert = {
-        ...values,
-        id: cuid(),
-        hostPhotoURL: detailImg,
-        hostedBy: 'Bob'
-      }
-      this.props.createConcert(newConcert);
-      // this.props.history.push('/dashboard/concerts');
-    }
+  async componentDidMount() {
+    const {firestore, match} = this.props;
+    await firestore.setListener(`concerts/${match.params.id}`);
   }
+
+  async componentWillUnmount() {
+    const {firestore, match} = this.props;
+    await firestore.unsetListener(`concerts/${match.params.id}`);
+  }
+
+  onFormSubmit = async values => {
+    // values.venueLatLng =this.state.venueLatLng;
+    try {
+      if (this.props.initialValues.id) {
+        // if(Object.keys(values.venueLatLng).length === 0) {
+        //   values.venueLatLng = this.props.concert.venueLatLng
+        // }
+        this.props.updateConcert(values);
+        this.props.history.push('/dashboard/concerts');
+      } else {
+        let createdConcert = await this.props.createConcert(values);
+        this.props.history.push(`/dashboard/new_concert/photos/${createdConcert.id}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // handleCitySelect = selectedCity => {
   //   geocodeByAddress(selectedCity)
@@ -109,6 +122,7 @@ class ConcertForm extends Component {
 
   render() {
     // const {history, initialValues} = this.props;
+    // const {invalid, submitting, pristine, concert, cancelToggle} = this.props;
     const {invalid, submitting, pristine} = this.props;
     return (
       <Segment>
@@ -168,6 +182,13 @@ class ConcertForm extends Component {
             } 
             type="button"
           >Cancel</Button> */}
+          {/* <Button 
+            type='button'
+            color={concert.cancelled ? 'green': 'red'}
+            floated='right'
+            content={concert.cancelled ? 'Reactivate concert': 'Cancel concert'}
+            onClick={() => cancelToggle(!concert.cancelled, concert.id)}
+          /> */}
         </Form>
       </Segment>
       
@@ -175,7 +196,7 @@ class ConcertForm extends Component {
   }
 }
 
-export default connect(
+export default withFirestore(connect(
   mapState, 
   actions
-)(reduxForm({form: 'concertForm', validate})(ConcertForm));
+)(reduxForm({ form: 'concertForm', validate, enableReinitialize: true })(ConcertForm)));

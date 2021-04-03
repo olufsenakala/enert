@@ -1,96 +1,133 @@
-import React from 'react';
-import { Segment, Header, Comment, Form, Button } from 'semantic-ui-react';
+import React, { Component } from 'react';
+import { Segment, Header, Comment } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import { formatDistance } from 'date-fns';
+
 import placeHolder from '../../../assets/adidas.webp';
+import ConcertDetailChatForm from './ConcertDetailChatForm';
 
-const ConcertDetailChat = () => {
-  return (
-    <div className="tc_cmnt__wrap">
-      <Segment
-        textAlign="center"
-        attached="top"
-        inverted
-        color="teal"
-        style={{ border: 'none' }}
-      >
-        <Header>Chat about this event</Header>
-      </Segment>
+class ConcertDetailChat extends Component {
+  state = {
+    showReplyForm: false,
+    selectedCommentId: null
+  }
 
-      <Segment attached>
-        <Comment.Group>
-          <Comment>
-            <Comment.Avatar src={placeHolder} />
-            <Comment.Content>
-              <Comment.Author as="a">Matt</Comment.Author>
-              <Comment.Metadata>
-                <div>Today at 5:42PM</div>
-              </Comment.Metadata>
-              <Comment.Text>How artistic!</Comment.Text>
-              <Comment.Actions>
-                <Comment.Action>Reply</Comment.Action>
-              </Comment.Actions>
-            </Comment.Content>
-          </Comment>
+  handleOpenReplyForm = (id) => () => {
+    this.setState({
+      showReplyForm: true,
+      selectedCommentId: id
+    })
+  }
 
-          <Comment>
-            <Comment.Avatar src={placeHolder} />
-            <Comment.Content>
-              <Comment.Author as="a">Elliot Fu</Comment.Author>
-              <Comment.Metadata>
-                <div>Yesterday at 12:30AM</div>
-              </Comment.Metadata>
-              <Comment.Text>
-                <p>
-                  This has been very useful for my research. Thanks as well!
-                </p>
-              </Comment.Text>
-              <Comment.Actions>
-                <Comment.Action>Reply</Comment.Action>
-              </Comment.Actions>
-            </Comment.Content>
-            <Comment.Group>
-              <Comment>
-                <Comment.Avatar src={placeHolder} />
+  handleCloseReplyForm = () => {
+    this.setState({
+      selectedCommentId: null,
+      showReplyForm: false
+    })
+  }
+
+  render() {
+    const { addConcertComment, concertId, concertChat } = this.props;
+    const { showReplyForm, selectedCommentId } = this.state;
+    return (
+      <div className="tc_cmnt__wrap">
+        <Segment
+          textAlign="center"
+          attached="top"
+          inverted
+          color="teal"
+          style={{ border: 'none' }}
+        >
+          <Header>Chat about this event</Header>
+        </Segment>
+
+        <Segment attached>
+          <Comment.Group>
+            {concertChat && concertChat.map((comment) => (
+              <Comment key={comment.id}>
+                <Comment.Avatar src={comment.photoURL || placeHolder} />
                 <Comment.Content>
-                  <Comment.Author as="a">Jenny Hess</Comment.Author>
+                  <Comment.Author 
+                    as={Link}
+                    to={`/profile/${comment.uid}`}
+                  >
+                    {comment.displayName}
+                  </Comment.Author>
                   <Comment.Metadata>
-                    <div>Just now</div>
+                    <div>{formatDistance(comment.date, Date.now())} ago</div>
                   </Comment.Metadata>
-                  <Comment.Text>Elliot you are always so right :)</Comment.Text>
+                  <Comment.Text>{comment.text}</Comment.Text>
                   <Comment.Actions>
-                    <Comment.Action>Reply</Comment.Action>
+                    <Comment.Action
+                      onClick={this.handleOpenReplyForm(comment.id)}
+                    >
+                      Reply
+                    </Comment.Action>
+                    {showReplyForm && selectedCommentId === comment.id && (
+                      <ConcertDetailChatForm 
+                        addConcertComment={addConcertComment}
+                        concertId={concertId}
+                        form={`reply_${comment.id}`}
+                        closeForm={this.handleCloseReplyForm}
+                        parentId={comment.id}
+                      />
+                    )}
                   </Comment.Actions>
                 </Comment.Content>
+                
+
+                {comment.childNodes && comment.childNodes.map((child) => (
+                  <Comment.Group>
+                    <Comment key={child.id}>
+                      <Comment.Avatar src={child.photoURL || placeHolder} />
+                      <Comment.Content>
+                        <Comment.Author 
+                          as={Link}
+                          to={`/profile/${child.uid}`}
+                        >
+                          {child.displayName}
+                        </Comment.Author>
+                        <Comment.Metadata>
+                          <div>{formatDistance(child.date, Date.now())} ago</div>
+                        </Comment.Metadata>
+                        <Comment.Text>{child.text}</Comment.Text>
+                        <Comment.Actions>
+                          <Comment.Action
+                            onClick={this.handleOpenReplyForm(child.id)}
+                          >
+                            Reply
+                          </Comment.Action>
+                          {showReplyForm && selectedCommentId === child.id && (
+                            <ConcertDetailChatForm 
+                              addConcertComment={addConcertComment}
+                              concertId={concertId}
+                              form={`reply_${child.id}`}
+                              closeForm={this.handleCloseReplyForm}
+                              parentId={child.parentId}
+                            />
+                          )}
+                        </Comment.Actions>
+                      </Comment.Content>
+                    </Comment>
+                  </Comment.Group>
+                ))}
+
               </Comment>
-            </Comment.Group>
-          </Comment>
+            ))}
 
-          <Comment>
-            <Comment.Avatar src={placeHolder} />
-            <Comment.Content>
-              <Comment.Author as="a">Joe Henderson</Comment.Author>
-              <Comment.Metadata>
-                <div>5 days ago</div>
-              </Comment.Metadata>
-              <Comment.Text>Dude, this is awesome. Thanks so much</Comment.Text>
-              <Comment.Actions>
-                <Comment.Action>Reply</Comment.Action>
-              </Comment.Actions>
-            </Comment.Content>
-          </Comment>
+          </Comment.Group>
+            
+          <ConcertDetailChatForm 
+            parentId={0}
+            addConcertComment={addConcertComment} 
+            concertId={concertId}
+            form={'newComment'}
+          />
 
-          <Form reply>
-            <Form.TextArea />
-            <Button
-              content="Add Reply"
-              labelPosition="left"
-              icon="edit"
-              primary
-            />
-          </Form>
-        </Comment.Group>
-      </Segment>
-    </div>
-  )
+        </Segment>
+      </div>
+    )
+  }
 }
 
 export default ConcertDetailChat;

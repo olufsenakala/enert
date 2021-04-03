@@ -4,7 +4,7 @@ import {Field, reduxForm} from 'redux-form';
 // import moment from 'moment';
 import { addYears } from 'date-fns';
 import DateInput from "../../app/common/form/DateInput";
-// import PlaceInput from "../../app/common/form/PlaceInput";
+import PlaceInput from "../../app/common/form/PlaceInput";
 import TextInput from "../../app/common/form/TextInput";
 import RadioInput from "../../app/common/form/RadioInput";
 
@@ -54,14 +54,14 @@ class Settings extends Component {
                         // maxDate={moment().subtract(18, 'years')}
                         maxDate={addYears(new Date(), -18)}
                     />
-                    {/* <Field
+                    <Field
                         name='city'
                         placeholder='Home Town'
                         options={{types: ['(cities)']}}
                         label='Female'
                         component={PlaceInput}
                         width={8}
-                    /> */}
+                    />
                     <Divider/>
                     <Button disabled={pristine || submitting} size='large' positive content='Update Profile'/>
                 </Form>

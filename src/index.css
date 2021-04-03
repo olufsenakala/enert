@@ -459,10 +459,24 @@ ul li {
   justify-content: space-between;
 }
 
+.cp_info .abt__wrp {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
 .cp_info .abt {
   font-weight: 300;
   font-size: 1.6rem;
-  margin-bottom: 1rem;
+}
+
+.cp_info__btns .back {
+  background: #b1b1b1;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 50%;
+  color: #fff;
 }
 
 .cp_info .abt .name {
@@ -475,8 +489,41 @@ ul li {
   font-weight: 300;
 }
 
+.cp_more__info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.cp_more__abt {
+  flex: 2;
+}
+
+.cp_more__abt .txt {
+  margin-bottom: 0.3rem;
+}
+
+.cp_more__abt .txt:last-child {
+  margin-bottom: 0;
+}
+
+.cp_intrst {
+  flex: 1;
+}
+
+.cp_intrst__ttl {
+  font-size: 1.3rem;
+  margin-bottom: 0.2rem;
+}
+
+.cp_intrst__items li {
+  margin-top: 0.1rem;
+}
+
 .cp_cncrt {
   margin-top: 5vh;
+  position: relative;
 }
 
 .cp_cncrt__tab {
@@ -493,6 +540,7 @@ ul li {
   display: inline-block;
   border-radius: 5rem;
   font-size: 0.85rem;
+  cursor: pointer;
 }
 
 .cp_cncrt__tab .ttl.active {
@@ -565,6 +613,7 @@ ul li {
 .cp_img__flw__no {
   font-size: 1.4rem;
   font-weight: 400;
+  margin-top: 0;
 }
 
 .cp_img__inr {
@@ -615,6 +664,7 @@ ul li {
 
 .cp_img .image {
   width: 100%;
+  border-radius: 2rem;
 }
 
 .cp_follow {
@@ -685,6 +735,7 @@ ul li {
 
 .cp_pht__icons {
   position: absolute;
+  overflow: hidden;
   border-radius: 0.8rem;
   bottom: 0;
   display: flex;
@@ -1719,4 +1770,15 @@ ul li {
 
 .tc_sug__ttl {
   text-align: center;
+}
+
+.dropzone {
+  border: dashed 3px #eee;
+  border-radius: 5px;
+  padding-top: 30px;
+  text-align: center;
+}
+
+.dropzone--isActive {
+  border: dashed 3px green;
 }

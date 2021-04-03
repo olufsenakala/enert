@@ -45,7 +45,8 @@ class NavBar extends Component {
           </ul>
           <div className="ct_login__wrap">
             {authenticated ? (
-              <SignedInMenu 
+              <SignedInMenu
+                auth={auth}
                 profile={profile}
                 signOut={this.handleSignOut} 
               />
